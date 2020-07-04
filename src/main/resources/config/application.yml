@@ -40,10 +40,19 @@ management:
 feign:
   hystrix:
     enabled: true
+    
+# See https://github.com/Netflix/Hystrix/wiki/Configuration
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+  shareSecurityContext: true        
 
 spring:
   application:
-    name: bet
+    name: bets
   jpa:
     open-in-view: false
     properties:

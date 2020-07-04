@@ -1,4 +1,4 @@
-package com.example.demo.client;
+package com.example.demo.service.dto.feign;
 
 
 import java.util.Set;
@@ -18,9 +18,6 @@ public class UserDTO {
     private boolean activated = false;
 
     private Set<String> authorities;
-
-    public UserDTO() {
-    }
 
     public Long getId() {
         return id;

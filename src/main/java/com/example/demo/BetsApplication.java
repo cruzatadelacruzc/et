@@ -8,7 +8,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
 
@@ -21,7 +20,6 @@ import java.util.Map;
 
 @SpringBootApplication
 @EnableEurekaClient
-@EnableFeignClients
 @EnableConfigurationProperties({AppProperties.class})
 public class BetsApplication implements InitializingBean {
 
