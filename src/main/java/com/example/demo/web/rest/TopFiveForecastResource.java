@@ -2,15 +2,16 @@ package com.example.demo.web.rest;
 
 import com.example.demo.service.TopFiveForecastService;
 import com.example.demo.service.dto.TopFiveForecastDTO;
+import com.example.demo.web.rest.error.BadRequestAlertException;
+import com.example.demo.web.rest.util.HeaderUtil;
 import com.example.demo.web.rest.util.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.net.URISyntaxException;
 
 @Slf4j
@@ -48,9 +49,9 @@ public class TopFiveForecastResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with TopFiveForecastDTO in body
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    /**@PostMapping("/topfiveforecasts")
+    @PostMapping("/topfiveforecasts")
     public ResponseEntity<TopFiveForecastDTO> createTopFiveForecast(@Valid @RequestBody TopFiveForecastDTO dto) throws URISyntaxException {
-        LOGGER.debug("Rest request to create a TopFiveForeCast with: {}", dto);
+        log.debug("Rest request to create a TopFiveForeCast with: {}", dto);
         if (dto.getId() != null) {
             throw new BadRequestAlertException("A new TopFiveForecast cannot already have an ID", ENTITY_NAME, "idexists");
         }
@@ -60,5 +61,5 @@ public class TopFiveForecastResource {
                 .headers(HeaderUtil.createEntityCreationAlert(
                         applicationName, true, ENTITY_NAME, topFiveForecastDTO.getId().toString()))
                 .body(topFiveForecastDTO);
-    }*/
+    }
 }

@@ -4,24 +4,63 @@ import lombok.Data;
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.web.cors.CorsConfiguration;
-
+/**
+ * Properties specific to Indicators.
+ * <p>
+ * Properties are configured in the {@code application.yml} file.
+ */
 @Getter
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class AppProperties {
+    private final Cache cache = new Cache();
     private Security security = new Security();
     private ClientApp clientApp = new ClientApp();
+    private final Register register = new Register();
     private final CorsConfiguration cors = new CorsConfiguration();
     private SignatureVerification signatureVerification = new SignatureVerification();
 
-    static class ClientApp {
+    @Getter
+    public static class Register{
+        private String discoveryUrl = "http://admin:eureka@localhost:8761/eureka/";
+
+        public Register setDiscoveryUrl(String discoveryUrl) {
+            this.discoveryUrl = discoveryUrl;
+            return this;
+        }
+    }
+    @Getter
+    public static class Cache{
+        private int timeToLiveSeconds = 3600;
+        private int backupCount = 1;
+        private final ManagementCenter managementCenter = new ManagementCenter();
+        @Getter
+        public static class ManagementCenter {
+            private boolean enabled = false;
+            private int updateInterval = 3;
+            private String url ="";
+
+            public ManagementCenter setEnabled(boolean enabled) {
+                this.enabled = enabled;
+                return this;
+            }
+
+            public ManagementCenter setUpdateInterval(int updateInterval) {
+                this.updateInterval = updateInterval;
+                return this;
+            }
+
+            public ManagementCenter setUrl(String url) {
+                this.url = url;
+                return this;
+            }
+        }
+    }
+    @Getter
+    public static class ClientApp {
         private String name;
 
         public ClientApp() {
             this.name = "betApp";
-        }
-
-        public String getName() {
-            return name;
         }
 
         public ClientApp setName(String name) {

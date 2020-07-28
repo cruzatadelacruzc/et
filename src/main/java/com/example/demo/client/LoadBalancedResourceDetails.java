@@ -17,8 +17,6 @@ import java.net.URISyntaxException;
 @Component
 public class LoadBalancedResourceDetails extends ClientCredentialsResourceDetails {
 
-    private String tokenServiceId;
-
     private final AppProperties properties;
 
     private LoadBalancerClient loadBalancerClient;
@@ -28,27 +26,7 @@ public class LoadBalancedResourceDetails extends ClientCredentialsResourceDetail
         this.loadBalancerClient = loadBalancerClient;
     }
 
-    @Override
-    public String getClientId() {
-        String clientId = properties.getSecurity().getClientAuthorization().getClientId();
-        if (clientId == null) {
-            throw new InvalidClientException(
-                    "No client-authorization.client-id configured in application properties"
-            );
-        }
-        return clientId;
-    }
 
-    @Override
-    public String getClientSecret() {
-        String clientSecret = properties.getSecurity().getClientAuthorization().getClientSecret();
-        if (clientSecret == null) {
-            throw new InvalidClientException(
-                    "No client-authorization.client-secret configured in application properties"
-            );
-        }
-        return clientSecret;
-    }
 
     public String getTokenServiceId() {
         String tokenServiceId = properties.getSecurity().getClientAuthorization().getTokenServiceId();
@@ -60,14 +38,9 @@ public class LoadBalancedResourceDetails extends ClientCredentialsResourceDetail
         return tokenServiceId;
     }
 
-    public LoadBalancedResourceDetails setTokenServiceId(String tokenServiceId) {
-        this.tokenServiceId = tokenServiceId;
-        return this;
-    }
-
     @Override
     public String getAccessTokenUri() {
-        if (loadBalancerClient != null && tokenServiceId != null && !tokenServiceId.isEmpty()) {
+        if (loadBalancerClient != null) {
             try {
                 String accessTokenUri = properties.getSecurity().getClientAuthorization().getAccessTokenUri();
                 if (accessTokenUri == null) {

@@ -1,4 +1,4 @@
-package com.example.demo.service.dto.feign;
+package com.example.demo.service.feign.dto;
 
 
 import java.util.Set;

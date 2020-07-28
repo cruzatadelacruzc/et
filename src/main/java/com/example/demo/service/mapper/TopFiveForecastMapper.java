@@ -27,7 +27,6 @@ public class TopFiveForecastMapper implements EntityMapper<TopFiveForecastDTO, F
         if (dto.getMarketId() != null) {
             forecast.setMarket(marketMapper.fromId(dto.getMarketId()));
         }
-        forecast.setDate(dto.getDate());
         forecast.setForecaster(dto.getForecaster());
         forecast.setMoneyToBet(dto.getMoneyToBet());
         forecast.setRound(dto.getRound());

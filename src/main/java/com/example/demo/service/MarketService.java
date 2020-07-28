@@ -6,6 +6,8 @@ import com.example.demo.service.dto.MarketDTO;
 import com.example.demo.service.mapper.MarketMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ public class MarketService {
     private static final Logger LOGGER = LoggerFactory.getLogger(MarketService.class);
     private final MarketMapper marketMapper;
     private final MarketRepository marketRepository;
+    private static final String MARKET_BY_ID = "marketById";
 
     public MarketService(MarketMapper marketMapper, MarketRepository marketRepository) {
         this.marketMapper = marketMapper;
@@ -35,6 +38,7 @@ public class MarketService {
      * @return {@link MarketDTO} instance if is present.
      */
     @Transactional(readOnly = true)
+    @Cacheable(cacheNames = MARKET_BY_ID)
     public Optional<MarketDTO> findOneById(Long id) {
         LOGGER.debug("Request to get a Market with ID: {}", id);
         return marketRepository.findById(id).map(marketMapper::toDto);
@@ -58,6 +62,7 @@ public class MarketService {
      * @param marketDTO the entity to save.
      * @return the persisted entity.
      */
+    @CacheEvict(cacheNames = MARKET_BY_ID, allEntries = true)
     public MarketDTO createMarket(MarketDTO marketDTO) {
         LOGGER.debug("Request to save Market : {}", marketDTO);
         Market newMarket = marketMapper.toEntity(marketDTO);
@@ -70,6 +75,7 @@ public class MarketService {
      *
      * @param id identifier of the {@link Market}
      */
+    @CacheEvict(cacheNames = MARKET_BY_ID, allEntries = true)
     public void deleteMarket(Long id) {
         marketRepository.deleteById(id);
     }

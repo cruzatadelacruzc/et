@@ -2,6 +2,8 @@ package com.example.demo.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,6 +16,7 @@ import java.util.Set;
  */
 @Data
 @Entity
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Forecast implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,6 +45,7 @@ public class Forecast implements Serializable {
     private Market market;
 
     @OneToMany(mappedBy = "forecast")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<GolfersForecast> golfersForecasts = new HashSet<>();
 
     @Override

@@ -13,7 +13,6 @@ public class ForecastDTO {
 
     private Long id;
 
-    @NotNull
     private LocalDateTime date;
 
     @NotNull

@@ -1,6 +1,7 @@
 package com.example.demo.web.rest.error;
 
 import com.example.demo.service.error.GolfersListEmptyException;
+import com.example.demo.service.error.MoneyNoSufficientException;
 import com.example.demo.web.rest.util.HeaderUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -95,7 +96,9 @@ public class ExceptionTranslator implements ProblemHandling {
     public ResponseEntity<Problem> handleNoSuchElementException(NoSuchElementException ex, NativeWebRequest webRequest) {
         Problem problem = Problem.builder()
                 .withStatus(Status.NOT_FOUND)
-                .with(MESSAGE_KEY, ErrorConstants.ENTITY_NOT_FOUND_TYPE)
+                .with(MESSAGE_KEY, ex.getMessage().isEmpty() ? "Element not was found": ex.getMessage())
+                .withTitle("Element not found")
+                .withType(ErrorConstants.ENTITY_NOT_FOUND_TYPE)
                 .build();
         return create(ex, problem, webRequest);
     }
@@ -108,5 +111,10 @@ public class ExceptionTranslator implements ProblemHandling {
     @ExceptionHandler
     public ResponseEntity<Problem> handleGolfersListEmptyException(GolfersListEmptyException ex, NativeWebRequest webRequest){
         return create(ex, new GolfersListEmptyException(), webRequest);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleMoneyNoSufficientException(MoneyNoSufficientException ex, NativeWebRequest webRequest){
+        return create(ex, new MoneyNoSufficientException(), webRequest);
     }
 }

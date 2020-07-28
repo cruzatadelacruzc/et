@@ -1,13 +1,14 @@
 package com.example.demo;
 
 import com.example.demo.config.AppProperties;
+import com.example.demo.config.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
 
@@ -19,14 +20,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SpringBootApplication
-@EnableEurekaClient
+@EnableDiscoveryClient
 @EnableConfigurationProperties({AppProperties.class})
 public class BetsApplication implements InitializingBean {
 
     private static final Logger log = LoggerFactory.getLogger(BetsApplication.class);
-
-    private static final String PROFILE_DEV = "dev";
-    private static final String PROFILE_PROD = "prod";
 
     private final Environment env;
 
@@ -44,7 +42,7 @@ public class BetsApplication implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         Collection<String> profiles = Arrays.asList(env.getActiveProfiles());
-        if (profiles.contains(PROFILE_DEV) && profiles.contains(PROFILE_PROD)) {
+        if (profiles.contains(Constants.PROFILE_DEV) && profiles.contains(Constants.PROFILE_PROD)) {
             log.error("You have misconfigured your application! It should not run " +
                     "with both the 'dev' and 'prod' profiles at the same time.");
         }
@@ -62,7 +60,7 @@ public class BetsApplication implements InitializingBean {
          * This cannot be set in the application.yml file.
          * See https://github.com/spring-projects/spring-boot/issues/1219
          */
-        defProperties.put("spring.profiles.default", PROFILE_DEV);
+        defProperties.put("spring.profiles.default", Constants.PROFILE_DEV);
         app.setDefaultProperties(defProperties);
     }
 
