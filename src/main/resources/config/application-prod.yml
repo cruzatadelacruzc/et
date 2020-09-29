@@ -8,7 +8,7 @@
 # ===================================================================
 logging:
   level:
-    ROOT: INFO
+    ROOT: info
     com.example.demo: debug
 
 eureka:
@@ -16,7 +16,7 @@ eureka:
     hostname: ${DOMAIN_NAME:localhost}
   client:
     service-url:
-      defaultZone: ${application.register.discovery-url}/eureka/
+      defaultZone: http://admin:${application.registry-config.password}@${eureka.instance.hostname}:${server.port}/eureka/
 
 spring:
   profiles:
@@ -63,7 +63,7 @@ spring:
       hibernate.cache.use_minimal_puts: true
       hibernate.cache.hazelcast.use_lite_member: true
 server:
-  port: ${PORT:9999}
+  port: ${PORT:8083}
   compression:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
@@ -71,25 +71,4 @@ server:
 # ===================================================================
 # App specific properties
 # ===================================================================
-application:
-  register:
-    discovery-url: http://admin:eureka@localhost:8761
-  cache: # Cache configuration
-    time-to-live-seconds: 3600
-    backup-count: 1
-    management-center: # Full reference is available at: http://docs.hazelcast.org/docs/management-center/3.9/manual/html/Deploying_and_Starting.html
-      enabled: false
-      update-interval: 3
-      url: http://localhost:8180/mancenter
-  security:
-    client-authorization:
-      access-token-uri: http://uaa/oauth/token
-      token-service-id: uaa
-      client-id: internal
-      client-secret: internal
-  signature-verification:
-    public-key-endpoint-uri: http://uaa/oauth/token_key
-    #ttl for public keys to verify JWT tokens (in ms)
-    ttl: 3600000
-    #max. rate at which public keys will be fetched (in ms)
-    public-key-refresh-rate-limit: 10000
+#application:

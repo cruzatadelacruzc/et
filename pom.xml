@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>demo</artifactId>
+    <artifactId>bets</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Bets microservice</name>
+    <name>bets</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -68,6 +68,10 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-oauth2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.retry</groupId>
+            <artifactId>spring-retry</artifactId>
         </dependency>
 
         <!--Main dependencies-->
@@ -303,7 +307,6 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-        <finalName>microservice-bets</finalName>
     </build>
     <profiles>
         <profile>

@@ -12,6 +12,7 @@ eureka:
     registry-fetch-interval-seconds: 10
   instance:
     appname: bets
+    prefer-ip-address: true
     instanceId: bets:${spring.application.instance-id:${random.value}}
     status-page-url-path: ${management.endpoints.web.base-path}/info
     health-check-url-path: ${management.endpoints.web.base-path}/health
@@ -91,3 +92,22 @@ application:
   #     exposed-headers: "Authorization,Link,X-Total-Count"
   #     allow-credentials: true
   #     max-age: 1800
+  cache: # Cache configuration
+    time-to-live-seconds: 3600
+    backup-count: 1
+    management-center: # Full reference is available at: http://docs.hazelcast.org/docs/management-center/3.9/manual/html/Deploying_and_Starting.html
+      enabled: false
+      update-interval: 3
+      url: http://localhost:8180/mancenter
+  security:
+    client-authorization:
+      access-token-uri: http://uaa/oauth/token
+      token-service-id: uaa
+      client-id: internal
+      client-secret: internal
+  signature-verification:
+    public-key-endpoint-uri: http://uaa/oauth/token_key
+    #ttl for public keys to verify JWT tokens (in ms)
+    ttl: 3600000
+    #max. rate at which public keys will be fetched (in ms)
+    public-key-refresh-rate-limit: 10000
